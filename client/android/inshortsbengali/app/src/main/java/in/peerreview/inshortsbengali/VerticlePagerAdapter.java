@@ -2,6 +2,9 @@ package in.peerreview.inshortsbengali;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +63,9 @@ public class VerticlePagerAdapter extends PagerAdapter {
         TextView fullstory = (TextView) itemView.findViewById(R.id.fullstory);
         //TextView position1 = (TextView) itemView.findViewById(R.id.position);
         title.setText(n.getTitle());
-        fullstory.setText(n.getFullstory());
+        Spanned html = Html.fromHtml(n.getFullstory() + "<a href='"+n.getUrl()+"'>. know more...</a>");
+        fullstory.setMovementMethod(LinkMovementMethod.getInstance());
+        fullstory.setText(html);
         //position1.setText((position+1)+"/"+mNodesList.size());
         Log.d("DIPANKAR","instantiateItem: URL"+n.getUrl());
         Picasso.with(mContext)

@@ -3,8 +3,10 @@ package in.peerreview.inshortsbengali;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 public class VerticalViewPager extends ViewPager {
 
@@ -22,7 +24,7 @@ public class VerticalViewPager extends ViewPager {
         // The majority of the magic happens here
         setPageTransformer(true, new VerticalPageTransformer());
         // The easiest way to get rid of the overscroll drawing that happens on the left and right
-        setOverScrollMode(OVER_SCROLL_NEVER);
+       // setOverScrollMode(OVER_SCROLL_NEVER);
     }
 
     private class VerticalPageTransformer implements ViewPager.PageTransformer {
@@ -81,6 +83,7 @@ public class VerticalViewPager extends ViewPager {
         return ev;
     }
 
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev){
         boolean intercepted = super.onInterceptTouchEvent(swapXY(ev));
@@ -88,8 +91,30 @@ public class VerticalViewPager extends ViewPager {
         return intercepted;
     }
 
+    private float x1,x2;
+    static final int MIN_DISTANCE = 150;
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        switch(ev.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                x1 = ev.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = ev.getX();
+                float deltaX = x2 - x1;
+                if (Math.abs(deltaX) > MIN_DISTANCE)
+                {
+                    Log.d("DIPANKAR","Left");
+                }
+                else
+                {
+                    // consider as something else - a screen tap for example
+                }
+                break;
+        }
         return super.onTouchEvent(swapXY(ev));
+
     }
 }
