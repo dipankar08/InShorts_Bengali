@@ -4,6 +4,10 @@
     <color name="colorPrimary">#FF9800</color>
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="colorPrimaryLight">#FFE0B2</color>
+
+    <!-- brand color: orange -->
+    <color name="fontcolorPrimary">#DE000000</color>
+    <color name="fontcolorSecondary">#9E9E9E</color>
     <!-- accent color: red -->
     <color name="colorAccent">#FF5252</color>
     <!-- text color: white -->

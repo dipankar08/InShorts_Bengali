@@ -20,4 +20,10 @@
         ...
     </style>
 
+    <style name="borderbtn">
+        <item name="android:background">@drawable/border</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
 </resources>

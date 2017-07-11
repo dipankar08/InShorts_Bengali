@@ -7,18 +7,8 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
-        <Button
-            android:layout_width="wrap_content"
-            android:text="Kolkata"
-            android:id="@+id/kolkata"
-            android:onClick="buttonPressed"
-            android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
-            android:text="State"
-            android:id="@+id/state"
-            android:onClick="buttonPressed"
-            android:layout_height="wrap_content" />
+        <Button android:text="Kolkata"  android:id="@+id/kolkata" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:onClick="buttonPressed" style="@style/borderbtn"/>
+        <Button android:text="State"  android:id="@+id/state" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:onClick="buttonPressed" style="@style/borderbtn"/>
     </LinearLayout>
 
 </LinearLayout>
