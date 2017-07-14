@@ -1,14 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#fff"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text_bdr_button_d"
+        android:layout_margin="10dp"
+        android:paddingBottom="10dp"
+        android:text="Quick Setting"
+        android:textAlignment="center"
+        android:textColor="@color/text" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <Button android:text="Kolkata"  android:id="@+id/kolkata" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:onClick="buttonPressed" style="@style/borderbtn"/>
-        <Button android:text="State"  android:id="@+id/state" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:onClick="buttonPressed" style="@style/borderbtn"/>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/trending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="10dp"
+            android:background="@drawable/round_bdr"
+            android:onClick="buttonPressed"
+            android:text="Trending"
+            android:textColor="@color/text"/>
+        <Button
+            android:id="@+id/unread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="10dp"
+            android:background="@drawable/round_bdr"
+            android:onClick="buttonPressed"
+            android:text="Unread"
+            android:textColor="@color/text" />
+        <Button
+            android:id="@+id/saved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="10dp"
+            android:background="@drawable/round_bdr"
+            android:onClick="buttonPressed"
+            android:text="Saved"
+            android:textColor="@color/text" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+        <Button
+            android:id="@+id/theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="10dp"
+            android:background="@drawable/round_bdr"
+            android:onClick="buttonPressed"
+            android:text="DarkTheme"
+            android:textColor="@color/text" />
     </LinearLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text_bdr_button_d"
+        android:layout_margin="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:text="Filter your Topics"
+        android:textAlignment="center"
+        android:textColor="@color/text" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/kolkata"
+            android:text="Kolkata"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/satate"
+            android:text="State"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/india"
+            android:text="India"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/international"
+            android:text="international"
+            style="@style/btnstyle"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+        <Button
+            android:id="@+id/lifestyle"
+            android:text="lifestyle"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/siteseeing"
+            android:text="siteseeing"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/game"
+            android:text="Game"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/science"
+            android:text="science"
+            style="@style/btnstyle"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text_bdr_button_d"
+        android:layout_margin="20dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:text="News Sources"
+        android:textAlignment="center"
+        android:textColor="@color/text" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/anySources"
+            android:text="all"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/anandabazar"
+            android:text="anandabazar"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/bartaman"
+            android:text="bartaman"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/pratidin"
+            android:text="bartaman"
+            style="@style/btnstyle"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/eisamay"
+            android:text="eisamay"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/zeenews"
+            android:text="zeenews"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/ebela"
+            android:text="ebela"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/s1"
+            android:text="s1"
+            style="@style/btnstyle"/>
+    </LinearLayout>
 </LinearLayout>

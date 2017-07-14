@@ -25,7 +25,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private String mCategories = "";
+    private String mSource = "";
+    private String mData = "";
+    private String mType = "";
     private HorizantalViewPagerAdapter mHorizantalViewPagerAdapter;
     private ViewPager pager;
     @Override
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setCurrentItem(1);
         pager.setAdapter(mHorizantalViewPagerAdapter);
+        pager.setCurrentItem(1);
     }
 
     public  void setTheme (boolean darkTheme){
@@ -53,14 +57,32 @@ public class MainActivity extends AppCompatActivity {
     }
     public void buttonPressed(View v){
         switch(v.getId()) {
-            case R.id.state:
-                mHorizantalViewPagerAdapter.LoadRemoteData("tag=state");
-                pager.setCurrentItem(1);
-                break;
-            case R.id.kolkata:
-                mHorizantalViewPagerAdapter.LoadRemoteData("tag=kolkata");
-                pager.setCurrentItem(1);
-                break;
+            case R.id.kolkata: mCategories = "kolkata"; break;
+            case R.id.state: mCategories = "state"; break;
+            case R.id.india: mCategories = "india"; break;
+            case R.id.international: mCategories = "international"; break;
+            case R.id.lifestyle: mCategories = "lifestyle"; break;
+            case R.id.siteseeing: mCategories = "siteseeing"; break;
+            case R.id.game: mCategories = "game"; break;
+            case R.id.science: mCategories = "science"; break;
+            //all sources
+            case R.id.pratidin: mSource = "pratidin"; break;
+            case R.id.eisamay: mSource = "eisamay"; break;
+            case R.id.zeenews: mSource = "zeenews"; break;
+            case R.id.ebela: mSource = "ebela"; break;
         }
+        String res  ="";
+        if(mCategories.length() != 0){
+            res+= "tag="+ mCategories +"&";
+        }
+        if(mSource.length() != 0){
+            res+= "tag="+ mCategories +"&";
+        }
+        if(mData.length() != 0){
+            res+= "tag="+ mData +"&";
+        }
+        mHorizantalViewPagerAdapter.LoadRemoteData(res);
+        pager.setCurrentItem(1);
+
     }
 }

@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ddutta on 7/11/2017.
@@ -40,6 +41,9 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
     public HorizantalViewPagerAdapter(Context context) {
         super();
         this.context = context;
+        mHttpclient.setConnectTimeout(30, TimeUnit.SECONDS);
+        mHttpclient.setReadTimeout(30, TimeUnit.SECONDS);
+        mHttpclient.setWriteTimeout(30, TimeUnit.SECONDS);
     }
 
 
@@ -135,7 +139,9 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
             query = "";
         }
         Log.d("Dipankar","Requesting page:"+(page+1));
-        Request request = new Request.Builder().url("http://52.89.112.230/api/inshortsbengali1?limit="+limit+"&page="+(page+1)+"&"+query).build();
+        String url = "http://52.89.112.230/api/inshortsbengali1?limit="+limit+"&page="+(page+1)+"&"+query;
+        Log.d("Dipankar"," Calling the server by "+url);
+        Request request = new Request.Builder().url(url).build();
         mHttpclient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
@@ -150,6 +156,9 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                     String jsonData = response.body().string();
                     JSONObject Jobject = new JSONObject(jsonData);
                     JSONArray Jarray = null;
+                    if (!Jobject.has("out")){
+                        return;
+                    }
                     Jarray = Jobject.getJSONArray("out");
                     for (int i = 0; i < Jarray.length(); i++) {
                         JSONObject object = Jarray.getJSONObject(i);
