@@ -122,8 +122,8 @@
             android:text="ebela"
             style="@style/btnstyle"/>
         <Button
-            android:id="@+id/s1"
-            android:text="s1"
+            android:id="@+id/songbaad"
+            android:text="songbaad"
             style="@style/btnstyle"/>
     </LinearLayout>
     <TextView

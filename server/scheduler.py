@@ -26,7 +26,7 @@ def gd(a):
     a= a.replace('www.','')
     return a[:a.find('.')]
     
-url = 'http://52.89.112.230/api/inshortsbengali1'
+url = 'http://52.89.112.230/api/inshortsbengali'
 def submit(ans):
     if not ans: return
     print '[Info] Summiting data ...'
@@ -115,7 +115,27 @@ def grabebela(tag, url):
         except:
             pass
     submit(ans)
-    
+
+def grabsongbaad(tag, url):
+    ans = []
+    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    #pdb.set_trace()
+    urls = [ makeabs(url, x.get('href')) for x in soup.select('.content .latestnews1 .fimage1 > a') if x.has_key('href') and x.get('href')]
+    tag += ','+ gd(url)
+    for u in urls[::-1]:
+        try:
+            print '[Info]  Processing ',u,'...'
+            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            #pdb.set_trace()
+            title = soup.select_one('article  > h1').text
+            imgurl = soup.select_one('article .entry img').get('src')
+            fullstory = ''.join([x.text for x in soup.select('article .entry > p') if x ])
+            preview = fullstory[:500]
+            ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
+            
+        except:
+            pass
+    submit(ans)
 def pratidin():
     grabPratidin("kolkata", "http://www.sangbadpratidin.in/category/kolkata/")
     grabPratidin("state", "http://www.sangbadpratidin.in/category/state/")
@@ -149,7 +169,20 @@ def ebela():
     grabebela("international", "https://ebela.in/international?ref=national-TopNav")
     grabebela("lifestyle", "https://ebela.in/lifestyle?ref=entertainment-TopNav")
     grabebela("science", "https://ebela.in/technology?ref=lifestyle-TopNav")    
+	
+def songbaad():
+    #grabebela("kolkata", "http://zeenews.india.com/bengali/kolkata?pfrom=top-nav")
+    #grabsongbaad("state", "https://ebela.in/state?ref=entertainment-TopNav")
+    #grabsongbaad("india", "https://ebela.in/national?ref=strydtl-state-TopNav")
+    grabsongbaad("entertainment", "http://songbaad.com/entertainment/")
+    grabsongbaad("international", "http://songbaad.com/world/")
+    grabsongbaad("lifestyle", "http://songbaad.com/lifestyle/")
+    grabsongbaad("science", "http://songbaad.com/science-and-technology/")  
+    grabsongbaad("game", "http://songbaad.com/sports/")  
+
+songbaad();
 pratidin();
 eisamay();
 zeenews();
-ebela();
+
+

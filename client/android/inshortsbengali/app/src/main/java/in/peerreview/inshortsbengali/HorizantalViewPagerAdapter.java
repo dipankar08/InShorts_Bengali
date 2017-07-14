@@ -140,7 +140,7 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
         }
         MainActivity.Get().showLoading();
         Log.d("Dipankar","Requesting page:"+(page+1));
-        String url = "http://52.89.112.230/api/inshortsbengali1?limit="+limit+"&page="+(page+1)+"&"+query;
+        String url = "http://52.89.112.230/api/inshortsbengali?limit="+limit+"&page="+(page+1)+"&"+query;
         Log.d("Dipankar"," Calling the server by "+url);
         Request request = new Request.Builder().url(url).build();
         mHttpclient.newCall(request).enqueue(new Callback() {
