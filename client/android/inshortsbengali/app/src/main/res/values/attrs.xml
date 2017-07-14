@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="text" format="reference|color" />
+    <attr name="textn" format="reference|color" />
+    <attr name="back" format="reference|color" />
+    <attr name="backn" format="reference|color" />
+</resources>

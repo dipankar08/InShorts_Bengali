@@ -13,26 +13,46 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
-        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
-        <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
-        <!-- some other theme configurations for actionbar, overflow menu etc. -->
-        ...
+    </style>
+
+    <style name="AppTheme.Dark" parent="AppTheme">
+        <item name="text">#1ECD97</item>
+        <item name="back">#FFF</item>
+        <item name="textn">#000</item>
+        <item name="backn">#FFF</item>
+    </style>
+
+
+    <style name="AppTheme.Light" parent="AppTheme">
+        <item name="text">#FFF</item>
+        <item name="back">#000</item>
+        <item name="textn">#FFF</item>
+        <item name="backn">#000</item>
     </style>
 
     <style name="btnstyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">10dp</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">8dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">8dp</item>
         <item name="android:background">@drawable/round_bdr</item>
         <item name="android:onClick">buttonPressed</item>
         <item name="android:textColor">@color/text</item>
     </style>
-
+    <style name="txtstyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:background">@drawable/text_bdr_button_d</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
 </resources>

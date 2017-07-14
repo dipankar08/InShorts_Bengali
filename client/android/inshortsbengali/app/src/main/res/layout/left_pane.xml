@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:whatever="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/text_bdr_button_d"
-        android:layout_margin="10dp"
-        android:paddingBottom="10dp"
-        android:text="Quick Setting"
-        android:textAlignment="center"
-        android:textColor="@color/text" />
+        style="@style/txtstyle"
+        android:text="Quick Setting" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,74 +17,24 @@
         android:orientation="horizontal">
         <Button
             android:id="@+id/trending"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="10dp"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:textSize="10dp"
-            android:background="@drawable/round_bdr"
-            android:onClick="buttonPressed"
-            android:text="Trending"
-            android:textColor="@color/text"/>
+            android:text="trending"
+            style="@style/btnstyle"/>
         <Button
             android:id="@+id/unread"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:textSize="10dp"
-            android:background="@drawable/round_bdr"
-            android:onClick="buttonPressed"
-            android:text="Unread"
-            android:textColor="@color/text" />
+            android:text="unread"
+            style="@style/btnstyle"/>
         <Button
             android:id="@+id/saved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:textSize="10dp"
-            android:background="@drawable/round_bdr"
-            android:onClick="buttonPressed"
             android:text="Saved"
-            android:textColor="@color/text" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            style="@style/btnstyle"/>
         <Button
-            android:id="@+id/theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:textSize="10dp"
-            android:background="@drawable/round_bdr"
-            android:onClick="buttonPressed"
-            android:text="DarkTheme"
-            android:textColor="@color/text" />
+            android:id="@+id/all"
+            android:text="all"
+            style="@style/btnstyle"/>
     </LinearLayout>
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/text_bdr_button_d"
-        android:layout_margin="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="30dp"
-        android:text="Filter your Topics"
-        android:textAlignment="center"
-        android:textColor="@color/text" />
+        style="@style/txtstyle"
+        android:text="Filter your Topics"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -135,15 +80,8 @@
             style="@style/btnstyle"/>
     </LinearLayout>
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/text_bdr_button_d"
-        android:layout_margin="20dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="30dp"
-        android:text="News Sources"
-        android:textAlignment="center"
-        android:textColor="@color/text" />
+        style="@style/txtstyle"
+        android:text="News Sources" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -186,6 +124,23 @@
         <Button
             android:id="@+id/s1"
             android:text="s1"
+            style="@style/btnstyle"/>
+    </LinearLayout>
+    <TextView
+        android:text="Advance Setting"
+        style="@style/txtstyle"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/theme"
+            android:text="Change theme"
+            style="@style/btnstyle"/>
+        <Button
+            android:id="@+id/noimage"
+            android:text="NoImage"
             style="@style/btnstyle"/>
     </LinearLayout>
 </LinearLayout>

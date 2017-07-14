@@ -80,4 +80,8 @@ public class VerticlePagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
     }
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

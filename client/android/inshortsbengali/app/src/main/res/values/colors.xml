@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- brand color: orange -->
-    <color name="colorPrimary">#FF9800</color>
-    <color name="colorPrimaryDark">#F57C00</color>
-    <color name="colorPrimaryLight">#FFE0B2</color>
-
-    <!-- brand color: orange -->
-    <color name="fontcolorPrimary">#DE000000</color>
-    <color name="fontcolorSecondary">#9E9E9E</color>
-    <!-- accent color: red -->
-    <color name="colorAccent">#FF5252</color>
-    <!-- text color: white -->
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="textColorSecondary">#9E9E9E</color>
-    <!-- inverse text color: 87% black -->
-    <color name="textColorPrimaryInverse">#DE000000</color>
-    <color name="textColorSecondaryInverse">#9E9E9E</color>
-
+    <color name="colorPrimary">#1ECD97</color>
+    <color name="colorPrimaryDark">#1ECD97</color>
+    <color name="colorPrimaryLight">#1ECD97</color>
     <!-- My color -->
     <color name="text">#1ECD97</color>
     <color name="back">#fff</color>

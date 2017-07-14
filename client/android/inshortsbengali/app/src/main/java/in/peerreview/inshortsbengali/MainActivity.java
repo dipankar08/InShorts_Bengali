@@ -101,44 +101,57 @@ public class MainActivity extends AppCompatActivity {
 
     public void buttonPressed(View v) {
         switch (v.getId()) {
-            case R.id.kolkata:
+            case R.id.all:
+                mCategories = "";mSource="";
+                refetch();
+                break;
+            case R.id.trending:
                 mCategories = "kolkata";
                 break;
+            case R.id.saved:
+                break;
+            case R.id.kolkata:
+                mCategories = "kolkata";refetch();
+                break;
             case R.id.state:
-                mCategories = "state";
+                mCategories = "state";refetch();
                 break;
             case R.id.india:
-                mCategories = "india";
+                mCategories = "india";refetch();
                 break;
             case R.id.international:
-                mCategories = "international";
+                mCategories = "international";refetch();
                 break;
             case R.id.lifestyle:
-                mCategories = "lifestyle";
+                mCategories = "lifestyle";refetch();
                 break;
             case R.id.siteseeing:
-                mCategories = "siteseeing";
+                mCategories = "siteseeing";refetch();
                 break;
             case R.id.game:
-                mCategories = "game";
+                mCategories = "game";refetch();
                 break;
             case R.id.science:
-                mCategories = "science";
+                mCategories = "science";refetch();
                 break;
             //all sources
             case R.id.pratidin:
-                mSource = "pratidin";
+                mSource = "pratidin";refetch();
                 break;
             case R.id.eisamay:
-                mSource = "eisamay";
+                mSource = "eisamay";refetch();
                 break;
             case R.id.zeenews:
-                mSource = "zeenews";
+                mSource = "zeenews";refetch();
                 break;
             case R.id.ebela:
-                mSource = "ebela";
+                mSource = "ebela";refetch();
                 break;
         }
+
+
+    }
+    public void refetch(){
         String res = "";
         if (mCategories.length() != 0) {
             res += "tag=" + mCategories + "&";
@@ -151,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mHorizantalViewPagerAdapter.LoadRemoteData(res);
         pager.setCurrentItem(1);
-
     }
     public void moveToTop(){
         mHorizantalViewPagerAdapter.verticalViewPager.setCurrentItem(0);
