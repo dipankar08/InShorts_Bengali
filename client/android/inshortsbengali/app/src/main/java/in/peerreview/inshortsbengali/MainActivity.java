@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.squareup.okhttp.Callback;
@@ -31,58 +33,127 @@ public class MainActivity extends AppCompatActivity {
     private String mType = "";
     private HorizantalViewPagerAdapter mHorizantalViewPagerAdapter;
     private ViewPager pager;
+
+    AlphaAnimation inAnimation;
+    AlphaAnimation outAnimation;
+
+    FrameLayout progressBarHolder;
+
+    static MainActivity sMainActivity;
+
+    public static MainActivity Get() {
+        return sMainActivity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sMainActivity = this;
         //setTheme(darkTheme ? R.style.AppThemeDark : R.style.AppThemeLight);
         setContentView(R.layout.activity_main);
 
         mHorizantalViewPagerAdapter = new HorizantalViewPagerAdapter(this);
+        progressBarHolder = (FrameLayout) findViewById(R.id.progressBarHolder);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setCurrentItem(1);
         pager.setAdapter(mHorizantalViewPagerAdapter);
         pager.setCurrentItem(1);
     }
 
-    public  void setTheme (boolean darkTheme){
-        //setTheme(darkTheme ? R.style.AppThemeDark : R.style.AppThemeLight);
-    }
-    public void showToast(final String msg){
+    public void showLoading() {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MainActivity.this,  msg, Toast.LENGTH_SHORT).show();
+                inAnimation = new AlphaAnimation(0f, 1f);
+                inAnimation.setDuration(200);
+                progressBarHolder.setAnimation(inAnimation);
+                progressBarHolder.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    public void hideLoading() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                outAnimation = new AlphaAnimation(1f, 0f);
+                outAnimation.setDuration(200);
+                progressBarHolder.setAnimation(outAnimation);
+                progressBarHolder.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    public void setTheme(boolean darkTheme) {
+        //setTheme(darkTheme ? R.style.AppThemeDark : R.style.AppThemeLight);
+    }
+
+    public void showToast(final String msg) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
     }
-    public void buttonPressed(View v){
-        switch(v.getId()) {
-            case R.id.kolkata: mCategories = "kolkata"; break;
-            case R.id.state: mCategories = "state"; break;
-            case R.id.india: mCategories = "india"; break;
-            case R.id.international: mCategories = "international"; break;
-            case R.id.lifestyle: mCategories = "lifestyle"; break;
-            case R.id.siteseeing: mCategories = "siteseeing"; break;
-            case R.id.game: mCategories = "game"; break;
-            case R.id.science: mCategories = "science"; break;
+
+    public void buttonPressed(View v) {
+        switch (v.getId()) {
+            case R.id.kolkata:
+                mCategories = "kolkata";
+                break;
+            case R.id.state:
+                mCategories = "state";
+                break;
+            case R.id.india:
+                mCategories = "india";
+                break;
+            case R.id.international:
+                mCategories = "international";
+                break;
+            case R.id.lifestyle:
+                mCategories = "lifestyle";
+                break;
+            case R.id.siteseeing:
+                mCategories = "siteseeing";
+                break;
+            case R.id.game:
+                mCategories = "game";
+                break;
+            case R.id.science:
+                mCategories = "science";
+                break;
             //all sources
-            case R.id.pratidin: mSource = "pratidin"; break;
-            case R.id.eisamay: mSource = "eisamay"; break;
-            case R.id.zeenews: mSource = "zeenews"; break;
-            case R.id.ebela: mSource = "ebela"; break;
+            case R.id.pratidin:
+                mSource = "pratidin";
+                break;
+            case R.id.eisamay:
+                mSource = "eisamay";
+                break;
+            case R.id.zeenews:
+                mSource = "zeenews";
+                break;
+            case R.id.ebela:
+                mSource = "ebela";
+                break;
         }
-        String res  ="";
-        if(mCategories.length() != 0){
-            res+= "tag="+ mCategories +"&";
+        String res = "";
+        if (mCategories.length() != 0) {
+            res += "tag=" + mCategories + "&";
         }
-        if(mSource.length() != 0){
-            res+= "tag="+ mCategories +"&";
+        if (mSource.length() != 0) {
+            res += "tag=" + mCategories + "&";
         }
-        if(mData.length() != 0){
-            res+= "tag="+ mData +"&";
+        if (mData.length() != 0) {
+            res += "tag=" + mData + "&";
         }
         mHorizantalViewPagerAdapter.LoadRemoteData(res);
         pager.setCurrentItem(1);
 
+    }
+    public void moveToTop(){
+        mHorizantalViewPagerAdapter.verticalViewPager.setCurrentItem(0);
     }
 }

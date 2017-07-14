@@ -31,8 +31,8 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
 
     private Context context;
 
-    private VerticalViewPager verticalViewPager;
-    private VerticlePagerAdapter verticlePagerAdapter;
+    public static VerticalViewPager verticalViewPager;
+    public VerticlePagerAdapter verticlePagerAdapter;
     private static OkHttpClient mHttpclient = new OkHttpClient();
 
     static int page = -1; // Note that at the time of fetching we are trying to get the next one and once we get it incremnet the page
@@ -138,6 +138,7 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
         if(query == null){
             query = "";
         }
+        MainActivity.Get().showLoading();
         Log.d("Dipankar","Requesting page:"+(page+1));
         String url = "http://52.89.112.230/api/inshortsbengali1?limit="+limit+"&page="+(page+1)+"&"+query;
         Log.d("Dipankar"," Calling the server by "+url);
@@ -148,6 +149,12 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                 //showToast("Not able to retrive data ...");
                 e.printStackTrace();
                 isProgress = false;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.Get().hideLoading();
+                    }
+                });
             }
             @Override
             public void onResponse(Response response) throws IOException {
@@ -183,6 +190,9 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                             } else{
                                 verticlePagerAdapter.appendNodes(nodesList);
                                 page++;
+                                if(page == 0){
+                                    MainActivity.Get().moveToTop();
+                                }
                             }
                         }
                     });
@@ -191,6 +201,12 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
 
                 }
                 isProgress = false;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.Get().hideLoading();
+                    }
+                });
             }
 
         });
