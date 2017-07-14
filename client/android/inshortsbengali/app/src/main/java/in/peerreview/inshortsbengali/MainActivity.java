@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             res += "tag=" + mCategories + "&";
         }
         if (mSource.length() != 0) {
-            res += "tag=" + mCategories + "&";
+            res += "tag=" + mSource + "&";
         }
         if (mData.length() != 0) {
             res += "tag=" + mData + "&";

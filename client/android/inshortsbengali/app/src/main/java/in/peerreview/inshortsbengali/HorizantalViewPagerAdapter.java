@@ -140,7 +140,7 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
         }
         MainActivity.Get().showLoading();
         Log.d("Dipankar","Requesting page:"+(page+1));
-        String url = "http://52.89.112.230/api/inshortsbengali?limit="+limit+"&page="+(page+1)+"&"+query;
+        String url = "http://52.89.112.230/api/inshortsbengali?_project=uid,title,preview,url,imgurl,date&limit="+limit+"&page="+(page+1)+"&"+query;
         Log.d("Dipankar"," Calling the server by "+url);
         Request request = new Request.Builder().url(url).build();
         mHttpclient.newCall(request).enqueue(new Callback() {
@@ -163,42 +163,40 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                     String jsonData = response.body().string();
                     JSONObject Jobject = new JSONObject(jsonData);
                     JSONArray Jarray = null;
-                    if (!Jobject.has("out")){
-                        return;
-                    }
-                    Jarray = Jobject.getJSONArray("out");
-                    for (int i = 0; i < Jarray.length(); i++) {
-                        JSONObject object = Jarray.getJSONObject(i);
-                        if(object.has("title") && object.has("fullstory")) { //TODO
-                            nodesList.add(new Nodes(object.optString("uid",null),
-                                    object.optString("title",null),
-                                    object.optString("imgurl",null),
-                                    object.optString("preview",null),
-                                    object.optString("author",null),
-                                    object.optString("url",null),
-                                    object.optString("date",null),
-                                    null,
-                                    null));
+                    if (Jobject.has("out")){
+                        Jarray = Jobject.getJSONArray("out");
+                        for (int i = 0; i < Jarray.length(); i++) {
+                            JSONObject object = Jarray.getJSONObject(i);
+                            if(object.has("title") && object.has("preview")) { //TODO
+                                nodesList.add(new Nodes(object.optString("uid",null),
+                                        object.optString("title",null),
+                                        object.optString("imgurl",null),
+                                        object.optString("preview",null),
+                                        object.optString("author",null),
+                                        object.optString("url",null),
+                                        object.optString("date",null),
+                                        null,
+                                        null));
 
-                        }
-                    }
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(nodesList.size() == 0){
-
-                            } else{
-                                verticlePagerAdapter.appendNodes(nodesList);
-                                page++;
-                                if(page == 0){
-                                    MainActivity.Get().moveToTop();
-                                }
                             }
                         }
-                    });
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(nodesList.size() == 0){
+
+                                } else{
+                                    verticlePagerAdapter.appendNodes(nodesList);
+                                    page++;
+                                    if(page == 0){
+                                        MainActivity.Get().moveToTop();
+                                    }
+                                }
+                            }
+                        });
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
-
                 }
                 isProgress = false;
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
