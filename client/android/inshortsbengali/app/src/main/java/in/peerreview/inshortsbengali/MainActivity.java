@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void buttonPressed(View v) {
+    public void buttonPressed(final View v) {
         switch (v.getId()) {
             case R.id.all:
                 mCategories = "";
