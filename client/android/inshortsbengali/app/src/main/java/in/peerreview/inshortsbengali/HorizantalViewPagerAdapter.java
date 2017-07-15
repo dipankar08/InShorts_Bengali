@@ -67,7 +67,6 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                 verticalViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     public void onPageScrollStateChanged(int state) {}
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
                     public void onPageSelected(int position) {
                         Log.i("Dipankar", "position: " + position);
                         LoadRemoteData(oldquery);

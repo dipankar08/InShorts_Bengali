@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,16 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
     FrameLayout progressBarHolder;
 
-    static MainActivity sMainActivity;
-
-    public static MainActivity Get() {
-        return sMainActivity;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sMainActivity = this;
+        //mark it false when the build is ready
+        Telemetry.setup("http://52.89.112.230/api/inshortsbengalistat", true);
         //setTheme(darkTheme ? R.style.AppThemeDark : R.style.AppThemeLight);
         setContentView(R.layout.activity_main);
 
@@ -86,8 +84,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setTheme(boolean darkTheme) {
-        //setTheme(darkTheme ? R.style.AppThemeDark : R.style.AppThemeLight);
+
+    private static MainActivity sMainActivity;
+
+    public static MainActivity Get() {
+        return sMainActivity;
     }
 
     public void showToast(final String msg) {
@@ -102,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
     public void buttonPressed(View v) {
         switch (v.getId()) {
             case R.id.all:
-                mCategories = "";mSource="";
+                mCategories = "";
+                mSource = "";
                 refetch();
                 break;
             case R.id.trending:
@@ -111,51 +113,67 @@ public class MainActivity extends AppCompatActivity {
             case R.id.saved:
                 break;
             case R.id.kolkata:
-                mCategories = "kolkata";refetch();
+                mCategories = "kolkata";
+                refetch();
                 break;
             case R.id.state:
-                mCategories = "state";refetch();
+                mCategories = "state";
+                refetch();
                 break;
             case R.id.india:
-                mCategories = "india";refetch();
+                mCategories = "india";
+                refetch();
                 break;
             case R.id.international:
-                mCategories = "international";refetch();
+                mCategories = "international";
+                refetch();
                 break;
             case R.id.lifestyle:
-                mCategories = "lifestyle";refetch();
+                mCategories = "lifestyle";
+                refetch();
                 break;
             case R.id.siteseeing:
-                mCategories = "siteseeing";refetch();
+                mCategories = "siteseeing";
+                refetch();
                 break;
             case R.id.game:
-                mCategories = "game";refetch();
+                mCategories = "game";
+                refetch();
                 break;
             case R.id.science:
-                mCategories = "science";refetch();
+                mCategories = "science";
+                refetch();
                 break;
             //all sources
             case R.id.pratidin:
-                mSource = "pratidin";refetch();
+                mSource = "pratidin";
+                refetch();
                 break;
             case R.id.eisamay:
-                mSource = "eisamay";refetch();
+                mSource = "eisamay";
+                refetch();
                 break;
             case R.id.zeenews:
-                mSource = "zeenews";refetch();
+                mSource = "zeenews";
+                refetch();
                 break;
             case R.id.ebela:
-                mSource = "ebela";refetch();
+                mSource = "ebela";
+                refetch();
                 break;
             case R.id.songbaad:
-                mSource = "songbaad";refetch();
+                mSource = "songbaad";
+                refetch();
                 break;
 
         }
-
+        Telemetry.sendTelemetry("menu_btn_click", new HashMap<String, String>() {{
+            put("btn_id", getResources().getResourceName(v.getId()));
+        }});
 
     }
-    public void refetch(){
+
+    public void refetch() {
         String res = "";
         if (mCategories.length() != 0) {
             res += "tag=" + mCategories + "&";
@@ -169,7 +187,8 @@ public class MainActivity extends AppCompatActivity {
         mHorizantalViewPagerAdapter.LoadRemoteData(res);
         pager.setCurrentItem(1);
     }
-    public void moveToTop(){
+
+    public void moveToTop() {
         mHorizantalViewPagerAdapter.verticalViewPager.setCurrentItem(0);
     }
 }
