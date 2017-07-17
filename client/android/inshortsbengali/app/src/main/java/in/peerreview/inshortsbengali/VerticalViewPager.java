@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-public class VerticalViewPager extends ViewPager {
+public class VerticalViewPager extends ViewPager  {
 
     public VerticalViewPager(Context context) {
         super(context);
@@ -92,6 +92,7 @@ public class VerticalViewPager extends ViewPager {
     }
 
     private float x1,x2;
+    private float y1,y2;
     static final int MIN_DISTANCE = 150;
 
     @Override
@@ -100,10 +101,13 @@ public class VerticalViewPager extends ViewPager {
         {
             case MotionEvent.ACTION_DOWN:
                 x1 = ev.getX();
+                y1 = ev.getY();
                 break;
             case MotionEvent.ACTION_UP:
                 x2 = ev.getX();
+                y2 = ev.getY();
                 float deltaX = x2 - x1;
+                float deltaY = y2 - y1;
                 if (Math.abs(deltaX) > MIN_DISTANCE)
                 {
                     Log.d("DIPANKAR","Left");
@@ -111,6 +115,10 @@ public class VerticalViewPager extends ViewPager {
                 else
                 {
                     // consider as something else - a screen tap for example
+                }
+                // detect non move taps taps
+                if (Math.abs(deltaX) < MIN_DISTANCE && Math.abs(deltaY) < MIN_DISTANCE){
+                    MainActivity.Get().showToolBar();
                 }
                 break;
         }

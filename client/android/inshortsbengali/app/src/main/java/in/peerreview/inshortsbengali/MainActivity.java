@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener{
 
     private String mCategories = "";
     private String mSource = "";
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     AlphaAnimation inAnimation;
     AlphaAnimation outAnimation;
 
-    FrameLayout progressBarHolder;
+    FrameLayout progressBarHolder,toolbar;
 
 
     @Override
@@ -52,10 +54,18 @@ public class MainActivity extends AppCompatActivity {
 
         mHorizantalViewPagerAdapter = new HorizantalViewPagerAdapter(this);
         progressBarHolder = (FrameLayout) findViewById(R.id.progressBarHolder);
+        toolbar = (FrameLayout) findViewById(R.id.toolbar);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setCurrentItem(1);
         pager.setAdapter(mHorizantalViewPagerAdapter);
         pager.setCurrentItem(1);
+
+        //toolbar
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                hideToolBar();
+            }
+        });
     }
 
     public void showLoading() {
@@ -68,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 progressBarHolder.setVisibility(View.VISIBLE);
             }
         });
-
     }
 
     public void hideLoading() {
@@ -83,7 +92,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    public void showToolBar() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                
+                inAnimation = new AlphaAnimation(0f, 1f);
+                inAnimation.setDuration(200);
+                toolbar.setAnimation(inAnimation);
+                toolbar.setVisibility(View.VISIBLE);
+                /*
+                Animation animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.pop_in);
+                toolbar.setVisibility(View.VISIBLE);
+                toolbar.startAnimation(animFadeIn);
+                */
+            }
+        });
+    }
 
+    public void hideToolBar() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                outAnimation = new AlphaAnimation(1f, 0f);
+                outAnimation.setDuration(200);
+                toolbar.setAnimation(outAnimation);
+                toolbar.setVisibility(View.GONE);
+            }
+        });
+    }
 
     private static MainActivity sMainActivity;
 
@@ -174,6 +212,22 @@ public class MainActivity extends AppCompatActivity {
                 refetch();
                 break;
 
+            //toolbar
+            case R.id.top:
+                moveToTop();
+                break;
+            case R.id.refresh:
+                refetch();
+                break;
+            case R.id.like:
+                break;
+            case R.id.share:
+                break;
+            case R.id.setting:
+                showSetting();
+                break;
+            case R.id.bookmark:
+                break;
         }
         Telemetry.sendTelemetry("menu_btn_click", new HashMap<String, String>() {{
             put("btn_id", getResources().getResourceName(v.getId()));
@@ -198,5 +252,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void moveToTop() {
         mHorizantalViewPagerAdapter.verticalViewPager.setCurrentItem(0);
+    }
+    public void showSetting() {
+        pager.setCurrentItem(0);
+        hideToolBar();
+        hideLoading();
+    }
+    @Override
+    public boolean onLongClick(View view) {
+        showToolBar();
+        return false;
     }
 }

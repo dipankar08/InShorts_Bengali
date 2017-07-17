@@ -72,7 +72,7 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                         LoadRemoteData(oldquery);
                     }
                 });
-
+/*
                 view.setOnTouchListener(new OnSwipeTouchListener(context) {
                     public void onSwipeTop() {
                         Toast.makeText(context, "top", Toast.LENGTH_SHORT).show();
@@ -88,7 +88,7 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                     }
 
                 });
-
+*/
                 LoadRemoteData(null);
                 break;
             case 2:

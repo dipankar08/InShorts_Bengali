@@ -61,11 +61,14 @@ public class VerticlePagerAdapter extends PagerAdapter {
         ImageView img = (ImageView) itemView.findViewById(R.id.image);
         TextView title = (TextView) itemView.findViewById(R.id.title);
         TextView fullstory = (TextView) itemView.findViewById(R.id.fullstory);
-        //TextView position1 = (TextView) itemView.findViewById(R.id.position);
+        TextView more = (TextView) itemView.findViewById(R.id.more);
+        TextView rank = (TextView) itemView.findViewById(R.id.rank);
         title.setText(n.getTitle());
-        Spanned html = Html.fromHtml(n.getFullstory() + "<a href='"+n.getUrl()+"'>. know more...</a>");
-        fullstory.setMovementMethod(LinkMovementMethod.getInstance());
-        fullstory.setText(html);
+        Spanned html = Html.fromHtml("<a href='"+n.getUrl()+"'>more...</a>");
+        more.setMovementMethod(LinkMovementMethod.getInstance());
+        more.setText(html);
+        rank.setText((position+1)+"/"+mNodesList.size());
+        fullstory.setText(n.getFullstory());
         //position1.setText((position+1)+"/"+mNodesList.size());
         Log.d("DIPANKAR","instantiateItem: URL"+n.getUrl());
         Picasso.with(mContext)
