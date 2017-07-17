@@ -34,7 +34,7 @@ def submit(ans):
     print '[Info] Summiting data ...'
     import json
     for a in ans:
-        a['date']= datetime.date.today().strftime("%d/%m/%Y")
+        a['date']= time.strftime('%d/%m/%Y %H:%M:%S',time.gmtime()) #GMT time
     payload = {"_cmd":"insert","_payload":ans}
     headers = {'Content-Type': 'application/json'}
     r = requests.post(url,headers=headers, data=json.dumps(payload))
@@ -248,11 +248,18 @@ def anandabazar():
     grabanandabazar("sports", "http://www.anandabazar.com/sport?ref=hm-topnav")
     grabanandabazar("business", "http://www.anandabazar.com/business?ref=hm-topnav")
 
-anandabazar() 
-bartamanpatrika();
-songbaad();
-pratidin();
-eisamay();
-zeenews();
+def job():
+  anandabazar() 
+  bartamanpatrika();
+  songbaad();
+  pratidin();
+  eisamay();
+  zeenews();
 
+import schedule
+import time
+schedule.every(90).minutes.do(job)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
