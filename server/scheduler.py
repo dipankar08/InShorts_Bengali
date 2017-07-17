@@ -11,9 +11,11 @@ def makeabs(a,b):
     if b.startswith('//'):
         b = 'http:'+ b
     
-    if b[0] != '/':
+    if b.startswith('http'):
         b =  b
     else:
+        if b[0] != '/':
+            b = '/'+b
         b = a[:a.find('/',10)] + b
     return b
 
@@ -43,7 +45,7 @@ def grabPratidin(tag, url):
     soup = BeautifulSoup(requests.get(url).text,"html.parser")	
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.article-container > article > .featured-image > a') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
-    for u in urls[::-1]:
+    for u in urls[::-1][:10]:
         print '[Info]  Processing ',u,'...'
         soup = BeautifulSoup(requests.get(u).text,"html.parser")
         title = soup.select_one('#primary  article header').text
@@ -59,7 +61,7 @@ def grabEiSamay(tag, url):
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.mainarticle1> h1 > a') if x.has_key('href') and x.get('href')]
     urls += [ makeabs(url, x.get('href')) for x in soup.select('div.other_main_news1 > ul > li > a') if x.has_key('href') and x.get('href')]   
     tag += ','+ gd(url)
-    for u in urls[::-1]:
+    for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
             soup = BeautifulSoup(requests.get(u).text,"html.parser")
@@ -80,7 +82,7 @@ def grabzeenews(tag, url):
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.lead-health-nw > a') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
-    for u in urls[::-1]:
+    for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
             soup = BeautifulSoup(requests.get(u).text,"html.parser")
@@ -101,7 +103,7 @@ def grabebela(tag, url):
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.container_main  .carousel-inner a.mrf-article-image') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
-    for u in urls[::-1]:
+    for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
             soup = BeautifulSoup(requests.get(u).text,"html.parser")
@@ -122,7 +124,7 @@ def grabsongbaad(tag, url):
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('.content .latestnews1 .fimage1 > a') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
-    for u in urls[::-1]:
+    for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
             soup = BeautifulSoup(requests.get(u).text,"html.parser")
@@ -136,6 +138,52 @@ def grabsongbaad(tag, url):
         except:
             pass
     submit(ans)
+    
+def grabbartamanpatrika(tag, url):
+    ans = []
+    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    #pdb.set_trace()
+    urls = [ makeabs(url, x.get('href')) for x in soup.select('.firstSection  a.bisad') if x.has_key('href') and x.get('href')]
+    tag += ','+ gd(url)
+    for u in urls[::-1][:10]:
+        try:
+            print '[Info]  Processing ',u,'...'
+            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            #pdb.set_trace()
+            title = soup.select_one('.firstSection .head-news  > h4 strong').text
+            if soup.select_one('.firstSection .head-news  img'):
+                imgurl = soup.select_one('.firstSection .head-news  img').get('src')
+            fullstory = ''.join([x.text for x in soup.select('.firstSection .head-news  .content') if x ])
+            preview = fullstory[:500]
+            ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
+            
+        except:
+            pass
+    submit(ans)
+
+def grabanandabazar(tag, url):
+    ans = []
+    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    #pdb.set_trace()
+    urls = [ makeabs(url, x.get('href')) for x in soup.select('.sectionstoryinside-sub > div > a') if x.has_key('href') and x.get('href')]
+    tag += ','+ gd(url)
+    for u in urls[::-1][:10]:
+        try:
+            print '[Info]  Processing ',u,'...'
+            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            #pdb.set_trace()
+            title = soup.select_one('#story_container h1').text
+            if soup.select_one('#story_container  img.img-responsive'):
+                imgurl = soup.select_one('#story_container  img.img-responsive').get('src')
+            fullstory = ''.join([x.text for x in soup.select('#story_container  .articleBody p') if x ])
+            preview = fullstory[:500]
+            ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
+            
+        except:
+            pass
+    submit(ans)
+    
+   
 def pratidin():
     grabPratidin("kolkata", "http://www.sangbadpratidin.in/category/kolkata/")
     grabPratidin("state", "http://www.sangbadpratidin.in/category/state/")
@@ -151,7 +199,7 @@ def eisamay():
     grabEiSamay("entertainment", "http://eisamay.indiatimes.com/entertainment/articlelist/15819570.cms")
     grabEiSamay("international", "http://eisamay.indiatimes.com/world/articlelist/15819594.cms")
     grabEiSamay("lifestyle", "http://eisamay.indiatimes.com/lifestyle/articlelist/15992436.cms")
-    grabEiSamay("game", "http://eisamay.indiatimes.com/sports/articlelist/23000116.cms")
+    grabEiSamay("sports", "http://eisamay.indiatimes.com/sports/articlelist/23000116.cms")
 def zeenews():
     grabzeenews("kolkata", "http://zeenews.india.com/bengali/kolkata?pfrom=top-nav")
     grabzeenews("state", "http://zeenews.india.com/bengali/state?pfrom=top-nav")
@@ -178,8 +226,30 @@ def songbaad():
     grabsongbaad("international", "http://songbaad.com/world/")
     grabsongbaad("lifestyle", "http://songbaad.com/lifestyle/")
     grabsongbaad("science", "http://songbaad.com/science-and-technology/")  
-    grabsongbaad("game", "http://songbaad.com/sports/")  
+    grabsongbaad("sports", "http://songbaad.com/sports/")  
+    
+def bartamanpatrika():
+    grabbartamanpatrika("kolkata", "http://bartamanpatrika.com/section.php?cID=12")
+    grabbartamanpatrika("state", "http://bartamanpatrika.com/section.php?cID=13")
+    grabbartamanpatrika("india", "http://bartamanpatrika.com/section.php?cID=14")
+    grabbartamanpatrika("international", "http://bartamanpatrika.com/section.php?cID=15")
+    grabbartamanpatrika("entertainment", "http://bartamanpatrika.com/section.php?cID=45")    
+    grabbartamanpatrika("movie", "http://bartamanpatrika.com/section.php?cID=41")    
+    grabbartamanpatrika("story", "http://bartamanpatrika.com/section.php?cID=33")
 
+def anandabazar():
+    grabanandabazar("kolkata", "http://www.anandabazar.com/calcutta?ref=hm-topnav")
+    grabanandabazar("state", "http://www.anandabazar.com/state?ref=hm-topnav")
+    grabanandabazar("india", "http://www.anandabazar.com/national?ref=hm-topnav")
+    grabanandabazar("international", "http://www.anandabazar.com/international?ref=hm-topnav")
+    grabanandabazar("entertainment", "http://www.anandabazar.com/entertainment?ref=hm-topnav")    
+    grabanandabazar("lifestyle", "http://www.anandabazar.com/lifestyle?ref=hm-topnav")    
+    grabanandabazar("science", "http://www.anandabazar.com/others/science?ref=hm-topnav")    
+    grabanandabazar("sports", "http://www.anandabazar.com/sport?ref=hm-topnav")
+    grabanandabazar("business", "http://www.anandabazar.com/business?ref=hm-topnav")
+
+anandabazar() 
+bartamanpatrika();
 songbaad();
 pratidin();
 eisamay();

@@ -153,6 +153,14 @@ public class MainActivity extends AppCompatActivity {
                 mSource = "eisamay";
                 refetch();
                 break;
+            case R.id.anandabazar:
+                mSource = "anandabazar";
+                refetch();
+                break;
+            case R.id.bartaman:
+                mSource = "bartamanpatrika";
+                refetch();
+                break;
             case R.id.zeenews:
                 mSource = "zeenews";
                 refetch();
