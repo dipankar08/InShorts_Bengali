@@ -4,6 +4,20 @@ import time
 import pdb
 import datetime
 from bs4 import BeautifulSoup
+
+def BuildSoup(u):
+    #We can try 3 times.
+    for i in range(3):
+        try:
+            return BeautifulSoup(requests.get(u).text,"html.parser")
+        except:
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
+    return None
    
 def makeabs(a,b):
     #pdb.set_trace()
@@ -42,12 +56,14 @@ def submit(ans):
 
 def grabPratidin(tag, url):
     ans = []
-    soup = BeautifulSoup(requests.get(url).text,"html.parser")	
+    soup = BuildSoup(url)	
+    if not soup: return;
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.article-container > article > .featured-image > a') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
     for u in urls[::-1][:10]:
         print '[Info]  Processing ',u,'...'
-        soup = BeautifulSoup(requests.get(u).text,"html.parser")
+        soup = BuildSoup(u)
+        if not soup: continue;
         title = soup.select_one('#primary  article header').text
         imgurl = soup.select_one('#primary .featured-image img').get('src')
         fullstory = soup.select_one('#primary .entry-content p').text
@@ -57,14 +73,16 @@ def grabPratidin(tag, url):
 
 def grabEiSamay(tag, url):
     ans = []
-    soup = BeautifulSoup(requests.get(url).text,"html.parser")	
+    soup = BuildSoup(url)
+    if not soup: return;	
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.mainarticle1> h1 > a') if x.has_key('href') and x.get('href')]
     urls += [ makeabs(url, x.get('href')) for x in soup.select('div.other_main_news1 > ul > li > a') if x.has_key('href') and x.get('href')]   
     tag += ','+ gd(url)
     for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
-            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            soup = BuildSoup(u)
+            if not soup: continue;
             #pdb.set_trace()
             title = soup.select_one('div.leftmain h1').text
             imgurl = soup.select_one('div.leftmain .article img').get('src')
@@ -78,14 +96,16 @@ def grabEiSamay(tag, url):
 
 def grabzeenews(tag, url):
     ans = []
-    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    soup = BuildSoup(url)
+    if not soup: return;
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.lead-health-nw > a') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
     for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
-            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            soup = BuildSoup(u)
+            if not soup: continue;
             #pdb.set_trace()
             title = soup.select_one('div.connrtund .full-story-head > h1').text
             imgurl = soup.select_one('div.connrtund .article-image img').get('src')
@@ -99,14 +119,16 @@ def grabzeenews(tag, url):
     
 def grabebela(tag, url):
     ans = []
-    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    soup = BuildSoup(url)
+    if not soup: return;
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('div.container_main  .carousel-inner a.mrf-article-image') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
     for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
-            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            soup = BuildSoup(u)
+            if not soup: continue;
             #pdb.set_trace()
             title = soup.select_one('div.container_main .ebela-new-story-section h1').text
             imgurl = soup.select_one('div.container_main .ebela-new-story-section img').get('src')
@@ -120,14 +142,16 @@ def grabebela(tag, url):
 
 def grabsongbaad(tag, url):
     ans = []
-    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    soup = BuildSoup(url)
+    if not soup: return;
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('.content .latestnews1 .fimage1 > a') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
     for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
-            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            soup = BuildSoup(u)
+            if not soup: continue;
             #pdb.set_trace()
             title = soup.select_one('article  > h1').text
             imgurl = soup.select_one('article .entry img').get('src')
@@ -141,14 +165,16 @@ def grabsongbaad(tag, url):
     
 def grabbartamanpatrika(tag, url):
     ans = []
-    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    soup = BuildSoup(url)
+    if not soup: return;
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('.firstSection  a.bisad') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
     for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
-            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            soup = BuildSoup(u)
+            if not soup: continue;
             #pdb.set_trace()
             title = soup.select_one('.firstSection .head-news  > h4 strong').text
             if soup.select_one('.firstSection .head-news  img'):
@@ -163,14 +189,16 @@ def grabbartamanpatrika(tag, url):
 
 def grabanandabazar(tag, url):
     ans = []
-    soup = BeautifulSoup(requests.get(url).text,"html.parser")
+    soup = BuildSoup(url)
+    if not soup: return;
     #pdb.set_trace()
     urls = [ makeabs(url, x.get('href')) for x in soup.select('.sectionstoryinside-sub > div > a') if x.has_key('href') and x.get('href')]
     tag += ','+ gd(url)
     for u in urls[::-1][:10]:
         try:
             print '[Info]  Processing ',u,'...'
-            soup = BeautifulSoup(requests.get(u).text,"html.parser")
+            soup = BuildSoup(u)
+            if not soup: continue;
             #pdb.set_trace()
             title = soup.select_one('#story_container h1').text
             if soup.select_one('#story_container  img.img-responsive'):
@@ -249,16 +277,21 @@ def anandabazar():
     grabanandabazar("business", "http://www.anandabazar.com/business?ref=hm-topnav")
 
 def job():
-  anandabazar() 
-  bartamanpatrika();
-  songbaad();
-  pratidin();
-  eisamay();
-  zeenews();
+    try:
+          anandabazar() 
+          bartamanpatrika();
+          songbaad();
+          pratidin();
+          eisamay();
+          zeenews();
+    except:
+        pass
+job();
 
 import schedule
 import time
 schedule.every(90).minutes.do(job)
+
 while True:
     schedule.run_pending()
     time.sleep(1)

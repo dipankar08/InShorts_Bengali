@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                
+
                 inAnimation = new AlphaAnimation(0f, 1f);
                 inAnimation.setDuration(200);
                 toolbar.setAnimation(inAnimation);
