@@ -54,24 +54,40 @@
                         android:layout_weight="1"
                         android:layout_marginBottom="5dip"
                         android:layout_marginTop="10dp"/>
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
-                        android:layout_height="wrap_content">
+                        android:background="@color/text"
+                        android:layout_height="22dp">
                         <TextView
                             android:id="@+id/more"
                             android:layout_width="wrap_content"
                             android:text="more ..."
-                            android:textColor="@color/text"
-                            android:layout_alignParentLeft="true"
-                            android:layout_height="wrap_content" />
+                            android:onClick="buttonPressed"
+                            android:layout_weight="1"
+                            android:textColor="@color/back"
+                            android:layout_gravity="left"
+                            android:layout_height="match_parent" />
+                        <TextView
+                            android:id="@+id/shareit"
+                            android:layout_width="wrap_content"
+                            android:text="more ..."
+                            android:onClick="buttonPressed"
+                            android:layout_weight="1"
+                            android:textColor="@color/back"
+                            android:layout_gravity="left"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:id="@+id/rank"
+                            android:visibility="gone"
+                            android:layout_weight="1"
                             android:layout_width="wrap_content"
+                            android:textColor="@color/back"
                             android:text="0/100"
                             android:layout_alignParentRight="true"
-                            android:layout_height="wrap_content" />
-                    </RelativeLayout>
+                            android:onClick="buttonPressed"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
