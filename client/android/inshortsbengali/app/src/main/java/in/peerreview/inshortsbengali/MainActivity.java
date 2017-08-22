@@ -1,5 +1,6 @@
 package in.peerreview.inshortsbengali;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -7,26 +8,17 @@ import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
+import in.peerreview.External.SettingsActivity;
+import in.peerreview.External.Telemetry;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener{
 
@@ -55,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         mHorizantalViewPagerAdapter = new HorizantalViewPagerAdapter(this);
         progressBarHolder = (FrameLayout) findViewById(R.id.progressBarHolder);
         toolbar = (FrameLayout) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setCurrentItem(1);
         pager.setAdapter(mHorizantalViewPagerAdapter);
@@ -66,6 +59,25 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 hideToolBar();
             }
         });
+    }
+
+    /********  External : Setting activity *****************/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            // launch settings activity
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showLoading() {
