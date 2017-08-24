@@ -31,7 +31,7 @@ public class ShareScreen {
     }
 
     private static File store(Bitmap bm, String fileName){
-        final String dirPath =  mContext.getCacheDir() + "/Screenshots";
+        final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
         File dir = new File(dirPath);
         if(!dir.exists())
             dir.mkdirs();
@@ -49,6 +49,7 @@ public class ShareScreen {
         }
         return file;
     }
+
     private static Bitmap getScreenShot(View view) {
         View screenView = view.getRootView();
         screenView.setDrawingCacheEnabled(true);
@@ -56,14 +57,16 @@ public class ShareScreen {
         screenView.setDrawingCacheEnabled(false);
         return bitmap;
     }
+
+
     private static void shareImage(File file,String titile){
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("image/*");
 
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Hey, I am sending this news to you. For more news like this please visit InShorts Bengali.");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "The interesting news only for you..");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         try {
             MainActivity.Get().startActivity(Intent.createChooser(intent, titile));
@@ -71,4 +74,5 @@ public class ShareScreen {
             Toast.makeText(MainActivity.Get(), "No App Available", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

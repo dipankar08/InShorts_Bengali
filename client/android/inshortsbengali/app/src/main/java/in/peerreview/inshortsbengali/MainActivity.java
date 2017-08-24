@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +18,16 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import in.peerreview.External.IPermissionCallbacks;
 import in.peerreview.External.MyOkHttp;
+import in.peerreview.External.RunTimePermission;
 import in.peerreview.External.SettingsActivity;
 import in.peerreview.External.ShareScreen;
 import in.peerreview.External.Telemetry;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener{
 
+    private static final String TAG ="MainActivity";
     private String mCategories = "";
     private String mSource = "";
     private String mData = "";
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         Telemetry.setup("http://52.89.112.230/api/inshortsbengalistat", true);
         MyOkHttp.setup(this);
         ShareScreen.setup(this);
+        RunTimePermission.setup(this);
         //setTheme(darkTheme ? R.style.AppThemeDark : R.style.AppThemeLight);
         setContentView(R.layout.activity_main);
 
@@ -57,6 +62,17 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         pager.setAdapter(mHorizantalViewPagerAdapter);
         pager.setCurrentItem(1);
 
+        RunTimePermission.askPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE, new IPermissionCallbacks() {
+            @Override
+            public void success() {
+                Log.d(TAG,"Success callback executed!");
+            }
+
+            @Override
+            public void failure() {
+                Log.d(TAG,"error callback executed!");
+            }
+        });
         //toolbar
         toolbar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -278,5 +294,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public boolean onLongClick(View view) {
         showToolBar();
         return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        RunTimePermission.processResult(requestCode,permissions,grantResults);
     }
 }
