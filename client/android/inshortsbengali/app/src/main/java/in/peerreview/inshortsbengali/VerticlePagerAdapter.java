@@ -67,7 +67,6 @@ public class VerticlePagerAdapter extends PagerAdapter {
         TextView shareit = (TextView) itemView.findViewById(R.id.shareit);
         TextView rank = (TextView) itemView.findViewById(R.id.rank);
         title.setText(n.getTitle());
-        Spanned html = Html.fromHtml("<a href='"+n.getUrl()+"'>More   .</a>");
         more.setMovementMethod(LinkMovementMethod.getInstance());
         more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +82,7 @@ public class VerticlePagerAdapter extends PagerAdapter {
                 ShareScreen.share();
             }
         });
-        //more.setText(html);
+
         rank.setText((position+1)+"/"+mNodesList.size());
         fullstory.setText(n.getFullstory());
         //position1.setText((position+1)+"/"+mNodesList.size());
