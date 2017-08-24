@@ -1,4 +1,4 @@
-package in.peerreview.inshortsbengali;
+package in.peerreview.External;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -12,20 +12,26 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import in.peerreview.inshortsbengali.MainActivity;
+
 /**
  Exaple:'
  ShareScreen.share();
  */
 public class ShareScreen {
+    private static Context mContext;
+    public static void setup(Context cx){
+        mContext = cx;
+    }
     public static void share(){
        View view = MainActivity.Get().getWindow().getDecorView().findViewById(android.R.id.content);
         Bitmap b = getScreenShot(view);
         File  f = store(b, "share.jpg");
-        shareImage(f);
+        shareImage(f,"Share news..");
     }
 
     private static File store(Bitmap bm, String fileName){
-        final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
+        final String dirPath =  mContext.getCacheDir() + "/Screenshots";
         File dir = new File(dirPath);
         if(!dir.exists())
             dir.mkdirs();
@@ -50,7 +56,7 @@ public class ShareScreen {
         screenView.setDrawingCacheEnabled(false);
         return bitmap;
     }
-    private static void shareImage(File file){
+    private static void shareImage(File file,String titile){
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
@@ -60,7 +66,7 @@ public class ShareScreen {
         intent.putExtra(android.content.Intent.EXTRA_TEXT, "");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         try {
-            MainActivity.Get().startActivity(Intent.createChooser(intent, "Share Screenshot"));
+            MainActivity.Get().startActivity(Intent.createChooser(intent, titile));
         } catch (ActivityNotFoundException e) {
             Toast.makeText(MainActivity.Get(), "No App Available", Toast.LENGTH_SHORT).show();
         }

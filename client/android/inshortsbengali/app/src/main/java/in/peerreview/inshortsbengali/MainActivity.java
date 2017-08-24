@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import in.peerreview.External.MyOkHttp;
 import in.peerreview.External.SettingsActivity;
+import in.peerreview.External.ShareScreen;
 import in.peerreview.External.Telemetry;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener{
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         //mark it false when the build is ready
         Telemetry.setup("http://52.89.112.230/api/inshortsbengalistat", true);
         MyOkHttp.setup(this);
+        ShareScreen.setup(this);
         //setTheme(darkTheme ? R.style.AppThemeDark : R.style.AppThemeLight);
         setContentView(R.layout.activity_main);
 

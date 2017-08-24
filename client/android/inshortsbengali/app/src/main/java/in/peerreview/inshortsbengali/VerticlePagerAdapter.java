@@ -16,12 +16,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Node;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import in.peerreview.External.BrowserActivity;
+import in.peerreview.External.ShareScreen;
 
 /**
  * Created by ddutta on 7/6/2017.
