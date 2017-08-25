@@ -159,7 +159,8 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                             for (int i = 0; i < Jarray.length(); i++) {
                                 JSONObject object = Jarray.getJSONObject(i);
                                 if(object.has("title") && object.has("preview")) { //TODO
-                                    nodesList.add(new Nodes(object.optString("uid",null),
+                                    nodesList.add( new Nodes(Nodes.TYPE.NEWS,
+                                            object.optString("uid",null),
                                             object.optString("title",null),
                                             object.optString("imgurl",null),
                                             object.optString("preview",null),

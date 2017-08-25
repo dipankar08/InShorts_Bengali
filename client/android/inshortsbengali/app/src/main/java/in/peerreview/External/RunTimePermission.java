@@ -46,12 +46,14 @@ public class RunTimePermission {
     private static final String TAG = "RunTimePermission";
     private static Activity mContext;
     private static int count  =0;
+    private static int retrycount = 0;
     public static void setup(Activity cx){
         mContext = cx;
     }
 
     static HashMap<Integer,IPermissionCallbacks> maps = new HashMap<>();
     public static void askPermission(String permission, IPermissionCallbacks callback){
+        retrycount = 2;
         if (ContextCompat.checkSelfPermission(mContext, permission /**/)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(mContext, permission)) {

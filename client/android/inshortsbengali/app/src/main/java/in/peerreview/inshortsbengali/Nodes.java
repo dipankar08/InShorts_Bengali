@@ -1,12 +1,20 @@
 package in.peerreview.inshortsbengali;
 
+import org.w3c.dom.Node;
+
 import java.util.List;
 
 /**
  * Created by ddutta on 7/6/2017.
  */
 public class Nodes {
+    enum TYPE{
+        NEWS,
+        LOADING,
+        ADDS
+    }
     String uid, title, imgUrl,fullstory,author,url,date;
+    Nodes.TYPE type;
     List<String> images, videos;
 
     public String getTitle() {
@@ -33,6 +41,10 @@ public class Nodes {
         return date;
     }
 
+    public TYPE getType() {
+        return type;
+    }
+
     public List<String> getImages() {
         return images;
     }
@@ -41,7 +53,7 @@ public class Nodes {
         return videos;
     }
 
-    public Nodes(String uid, String title, String main_image, String fullstory, String author, String url, String date, List<String> images, List<String> videos) {
+    public Nodes(Nodes.TYPE type, String uid, String title, String main_image, String fullstory, String author, String url, String date, List<String> images, List<String> videos) {
         this.uid = uid;
         this.title = title;
         this.imgUrl = main_image;
@@ -52,5 +64,6 @@ public class Nodes {
 
         this.images = images;
         this.videos = videos;
+        this.type = type;
     }
 }
