@@ -35,7 +35,7 @@ def submit(ans):
     import json
     for a in ans:
         a['date']= time.strftime('%d/%m/%Y %H:%M:%S',time.gmtime()) #GMT time
-    payload = {"_cmd":"insert","_payload":ans}
+    payload = {"_cmd":"insert","_payload":ans,"_ignore_error":True} #If some entry is duplicate just igonore it
     headers = {'Content-Type': 'application/json'}
     r = requests.post(url,headers=headers, data=json.dumps(payload))
     print r.text
