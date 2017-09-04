@@ -5,6 +5,102 @@ import pdb
 import datetime
 from bs4 import BeautifulSoup
 
+####################### Config need to be added at front #############################
+#http://52.89.112.230/api/inshortsbengali?_cmd=constraint&url=unique
+#http://52.89.112.230/api/inshortsbengali?_cmd=delete&CONFIRM_MSG=***I%20HEREBY%20DECLARE%20THAT%20I%20WANT%20TO%20DELETE%20THE%20TABLE%20WITH%20NAME%20inshortsbengali*****
+CONFIG ={
+    'news18' : {
+        'url':'http://bengali.news18.com/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':['.top_storys li > a','.section_widget  li > a','#trendingSlider li > a'],
+        'link_selector_catpage':['.top_storys li > a','.section_widget  li > a','#trendingSlider li > a'],
+        'artical_limit':30,
+        'title_selector':'.article_box h1',
+        'image_selector':'.article_box .articleimg img',
+        'video_selector':'',
+        'content_selector':'#article_body p',
+    },
+    'pratidin' : {
+        'url':'http://www.sangbadpratidin.in/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':['.slider-featured-image a','.first-post .single-article figure > a'],
+        'link_selector_catpage':['div.article-container > article > .featured-image > a'],
+        'artical_limit':20,
+        'title_selector':'#primary  article header',
+        'image_selector':'#primary .featured-image img',
+        'video_selector':'',
+        'content_selector':'#primary .entry-content p',
+    },
+    'eisamay' : {
+        'url':'http://eisamay.indiatimes.com/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':['.latestnews > a','.other_main_news1 li > a','.section_article .first > a'],
+        'link_selector_catpage':['div.mainarticle1> h1 > a','div.other_main_news1 > ul > li > a' ],
+        'artical_limit':20,
+        'title_selector':'div.leftmain h1',
+        'image_selector':'div.leftmain .article img',
+        'video_selector':'',
+        'content_selector':'div.leftmain .article arttextxml .Normal',
+    },
+    'zeenews' : {
+        'url':'http://zeenews.india.com/bengali/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':['.view-content h3 > a','.sub-leadarea li > a'],
+        'link_selector_catpage':['div.lead-health-nw > a' ],
+        'artical_limit':20,
+        'title_selector':'div.connrtund .full-story-head > h1',
+        'image_selector':'div.connrtund .article-image img',
+        'video_selector':'',
+        'content_selector':'div.connrtund div.field-type-text-with-summary .field-item > p',
+    },
+    'ebela' : {
+        'url':'https://ebela.in/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':['.carousel-inner .image_rollover_placeholder > a', '.home_individual_blocks  .mn_img_bot > a'],
+        'link_selector_catpage':['div.container_main  .carousel-inner a.mrf-article-image' ],
+        'artical_limit':20,
+        'title_selector':'div.container_main .ebela-new-story-section h1',
+        'image_selector':'div.container_main .ebela-new-story-section img',
+        'video_selector':'',
+        'content_selector':'div.container_main .ebela-new-story-section > p',
+    },
+    'songbaad' : {
+        'url':'http://bengali.news18.com/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':[],
+        'link_selector_catpage':['.content .latestnews1 .fimage1 > a' ],
+        'artical_limit':20,
+        'title_selector':'article  > h1',
+        'image_selector':'article .entry img',
+        'video_selector':'',
+        'content_selector':'article .entry > p',
+    },
+    'bartaman' : {
+        'url':'http://www.bartamanpatrika.com/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':['.pageLeftNewsFirst a.bisad'],
+        'link_selector_catpage':['.firstSection  a.bisad' ],
+        'artical_limit':20,
+        'title_selector':'.firstSection .head-news  > h4 strong',
+        'image_selector':'.firstSection .head-news  img',
+        'video_selector':'',
+        'content_selector':'.firstSection .head-news  .content',
+    },
+    'anandabazar' : {
+        'url':'http://www.anandabazar.com/',
+        'tag': 'firstpage',
+        'link_selector_firstpage':['.topphotostory a.PQTopStories','.container .leadstoryheading > a'],
+        'link_selector_catpage':['.sectionstoryinside-sub > div > a' ],
+        'artical_limit':20,
+        'title_selector':'#story_container h1',
+        'image_selector':'#story_container  img.img-responsive',
+        'video_selector':'',
+        'content_selector':'#story_container  .articleBody p',
+    },
+}
+
+##########################################################################
+
 def BuildSoup(u):
     #We can try 3 times.
     for i in range(3):
@@ -14,7 +110,7 @@ def BuildSoup(u):
             print("Connection refused by the server..")
             print("Let me sleep for 5 seconds")
             print("ZZzzzz...")
-            time.sleep(5)
+            time.sleep(1)
             print("Was a nice sleep, now let me continue...")
             continue
     return None
@@ -44,6 +140,7 @@ def gd(a):
     
 url = 'http://52.89.112.230/api/inshortsbengali'
 def submit(ans):
+    #pdb.set_trace()
     if not ans: return
     print '[Info] Summiting data ...'
     import json
@@ -52,166 +149,41 @@ def submit(ans):
     payload = {"_cmd":"insert","_payload":ans}
     headers = {'Content-Type': 'application/json'}
     r = requests.post(url,headers=headers, data=json.dumps(payload))
-    print r.text
+    print r.json().get('msg')
 
-def grabPratidin(tag, url):
-    ans = []
-    soup = BuildSoup(url)	
-    if not soup: return;
-    urls = [ makeabs(url, x.get('href')) for x in soup.select('div.article-container > article > .featured-image > a') if x.has_key('href') and x.get('href')]
-    tag += ','+ gd(url)
-    for u in urls[::-1][:10]:
-        print '[Info]  Processing ',u,'...'
-        soup = BuildSoup(u)
-        if not soup: continue;
-        title = soup.select_one('#primary  article header').text
-        imgurl = soup.select_one('#primary .featured-image img').get('src')
-        fullstory = soup.select_one('#primary .entry-content p').text
-        preview = fullstory[:500]
-        ans.append({'url':u,  'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory),"tag":tag,'preview':preview})    
-    submit(ans)
-
-def grabEiSamay(tag, url):
-    ans = []
-    soup = BuildSoup(url)
-    if not soup: return;	
-    urls = [ makeabs(url, x.get('href')) for x in soup.select('div.mainarticle1> h1 > a') if x.has_key('href') and x.get('href')]
-    urls += [ makeabs(url, x.get('href')) for x in soup.select('div.other_main_news1 > ul > li > a') if x.has_key('href') and x.get('href')]   
-    tag += ','+ gd(url)
-    for u in urls[::-1][:10]:
-        try:
-            print '[Info]  Processing ',u,'...'
-            soup = BuildSoup(u)
-            if not soup: continue;
-            #pdb.set_trace()
-            title = soup.select_one('div.leftmain h1').text
-            imgurl = soup.select_one('div.leftmain .article img').get('src')
-            fullstory = soup.select_one('div.leftmain .article arttextxml .Normal').text
-            preview = fullstory[:500]
-            ans.append({'url':u,  'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory),"tag":tag,'preview':preview})
-            
-        except:
-            pass
-    submit(ans)
-
-def grabzeenews(tag, url):
-    ans = []
-    soup = BuildSoup(url)
-    if not soup: return;
+def CommonParse(config):
     #pdb.set_trace()
-    urls = [ makeabs(url, x.get('href')) for x in soup.select('div.lead-health-nw > a') if x.has_key('href') and x.get('href')]
-    tag += ','+ gd(url)
-    for u in urls[::-1][:10]:
+    ans = []
+    url = config['url']
+    soup = BuildSoup(config['url'])
+    if not soup: return;
+    urls = [ ]
+    if config['tag'] == 'firstpage':
+        sel = config['link_selector_firstpage']
+    else:
+        sel = config['link_selector_catpage']
+    for t in sel:
+        urls += [makeabs(url, x.get('href')) for x in soup.select(t) if x.has_key('href') and x.get('href')]
+    urls = list(set(urls))
+    urls = urls[:config['artical_limit']]
+    tag = config['tag']+','+ gd(config['url'])
+    for u in urls:
         try:
             print '[Info]  Processing ',u,'...'
             soup = BuildSoup(u)
             if not soup: continue;
             #pdb.set_trace()
-            title = soup.select_one('div.connrtund .full-story-head > h1').text
-            imgurl = soup.select_one('div.connrtund .article-image img').get('src')
-            fullstory = soup.select_one('div.connrtund div.field-type-text-with-summary p').text
+            title = soup.select_one(config['title_selector']).text
+            if soup.select_one(config['image_selector']):
+                imgurl = soup.select_one(config['image_selector']).get('src')
+            fullstory = ''.join([x.text for x in soup.select(config['content_selector']) if x ])
             preview = fullstory[:500]
             ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
-            
         except:
             pass
-    submit(ans)
-    
-def grabebela(tag, url):
-    ans = []
-    soup = BuildSoup(url)
-    if not soup: return;
-    #pdb.set_trace()
-    urls = [ makeabs(url, x.get('href')) for x in soup.select('div.container_main  .carousel-inner a.mrf-article-image') if x.has_key('href') and x.get('href')]
-    tag += ','+ gd(url)
-    for u in urls[::-1][:10]:
-        try:
-            print '[Info]  Processing ',u,'...'
-            soup = BuildSoup(u)
-            if not soup: continue;
-            #pdb.set_trace()
-            title = soup.select_one('div.container_main .ebela-new-story-section h1').text
-            imgurl = soup.select_one('div.container_main .ebela-new-story-section img').get('src')
-            fullstory = ''.join([x.text for x in soup.select('div.container_main .ebela-new-story-section > p') if x ])
-            preview = fullstory[:500]
-            ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
-            
-        except:
-            pass
-    submit(ans)
+    submit(ans[::-1])
 
-def grabsongbaad(tag, url):
-    ans = []
-    soup = BuildSoup(url)
-    if not soup: return;
-    #pdb.set_trace()
-    urls = [ makeabs(url, x.get('href')) for x in soup.select('.content .latestnews1 .fimage1 > a') if x.has_key('href') and x.get('href')]
-    tag += ','+ gd(url)
-    for u in urls[::-1][:10]:
-        try:
-            print '[Info]  Processing ',u,'...'
-            soup = BuildSoup(u)
-            if not soup: continue;
-            #pdb.set_trace()
-            title = soup.select_one('article  > h1').text
-            imgurl = soup.select_one('article .entry img').get('src')
-            fullstory = ''.join([x.text for x in soup.select('article .entry > p') if x ])
-            preview = fullstory[:500]
-            ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
-            
-        except:
-            pass
-    submit(ans)
-    
-def grabbartamanpatrika(tag, url):
-    ans = []
-    soup = BuildSoup(url)
-    if not soup: return;
-    #pdb.set_trace()
-    urls = [ makeabs(url, x.get('href')) for x in soup.select('.firstSection  a.bisad') if x.has_key('href') and x.get('href')]
-    tag += ','+ gd(url)
-    for u in urls[::-1][:10]:
-        try:
-            print '[Info]  Processing ',u,'...'
-            soup = BuildSoup(u)
-            if not soup: continue;
-            #pdb.set_trace()
-            title = soup.select_one('.firstSection .head-news  > h4 strong').text
-            if soup.select_one('.firstSection .head-news  img'):
-                imgurl = soup.select_one('.firstSection .head-news  img').get('src')
-            fullstory = ''.join([x.text for x in soup.select('.firstSection .head-news  .content') if x ])
-            preview = fullstory[:500]
-            ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
-            
-        except:
-            pass
-    submit(ans)
-
-def grabanandabazar(tag, url):
-    ans = []
-    soup = BuildSoup(url)
-    if not soup: return;
-    #pdb.set_trace()
-    urls = [ makeabs(url, x.get('href')) for x in soup.select('.sectionstoryinside-sub > div > a') if x.has_key('href') and x.get('href')]
-    tag += ','+ gd(url)
-    for u in urls[::-1][:10]:
-        try:
-            print '[Info]  Processing ',u,'...'
-            soup = BuildSoup(u)
-            if not soup: continue;
-            #pdb.set_trace()
-            title = soup.select_one('#story_container h1').text
-            if soup.select_one('#story_container  img.img-responsive'):
-                imgurl = soup.select_one('#story_container  img.img-responsive').get('src')
-            fullstory = ''.join([x.text for x in soup.select('#story_container  .articleBody p') if x ])
-            preview = fullstory[:500]
-            ans.append({'url':u, 'title':pp(title),'imgurl':makeabs(url,pp(imgurl)),'fullstory':pp(fullstory), "tag":tag,'preview':preview})
-            
-        except:
-            pass
-    submit(ans)
-    
-   
+"""" >> This nees to be cleanred  
 def pratidin():
     grabPratidin("kolkata", "http://www.sangbadpratidin.in/category/kolkata/")
     grabPratidin("state", "http://www.sangbadpratidin.in/category/state/")
@@ -245,7 +217,7 @@ def ebela():
     grabebela("international", "https://ebela.in/international?ref=national-TopNav")
     grabebela("lifestyle", "https://ebela.in/lifestyle?ref=entertainment-TopNav")
     grabebela("science", "https://ebela.in/technology?ref=lifestyle-TopNav")    
-	
+    
 def songbaad():
     #grabebela("kolkata", "http://zeenews.india.com/bengali/kolkata?pfrom=top-nav")
     #grabsongbaad("state", "https://ebela.in/state?ref=entertainment-TopNav")
@@ -276,14 +248,17 @@ def anandabazar():
     grabanandabazar("sports", "http://www.anandabazar.com/sport?ref=hm-topnav")
     grabanandabazar("business", "http://www.anandabazar.com/business?ref=hm-topnav")
 
+"""
+
 def job():
     try:
-          anandabazar() 
-          bartamanpatrika();
-          songbaad();
-          pratidin();
-          eisamay();
-          zeenews();
+        CommonParse(CONFIG['news18']) 
+        CommonParse(CONFIG['pratidin'])
+        CommonParse(CONFIG['eisamay'])
+        CommonParse(CONFIG['zeenews'])
+        CommonParse(CONFIG['ebela'])
+        CommonParse(CONFIG['bartaman'])
+        CommonParse(CONFIG['anandabazar'])
     except:
         pass
 job();
