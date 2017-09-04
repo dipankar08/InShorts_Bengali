@@ -24,11 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import in.peerreview.External.CacheControl;
+import in.peerreview.External.IResponse;
+import in.peerreview.External.MyOkHttp;
+
 /**
  * Created by ddutta on 7/11/2017.
  */
 public class HorizantalViewPagerAdapter  extends PagerAdapter {
 
+    private static final String TAG = "HorizantalViewPagerAdapter" ;
     private Context context;
 
     public static VerticalViewPager verticalViewPager;
@@ -72,7 +77,7 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                         LoadRemoteData(oldquery);
                     }
                 });
-
+/*
                 view.setOnTouchListener(new OnSwipeTouchListener(context) {
                     public void onSwipeTop() {
                         Toast.makeText(context, "top", Toast.LENGTH_SHORT).show();
@@ -88,7 +93,7 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                     }
 
                 });
-
+*/
                 LoadRemoteData(null);
                 break;
             case 2:
@@ -141,62 +146,52 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
         Log.d("Dipankar","Requesting page:"+(page+1));
         String url = "http://52.89.112.230/api/inshortsbengali?_project=uid,title,preview,url,imgurl,date&limit="+limit+"&page="+(page+1)+"&"+query;
         Log.d("Dipankar"," Calling the server by "+url);
-        Request request = new Request.Builder().url(url).build();
-        mHttpclient.newCall(request).enqueue(new Callback() {
+        CacheControl c = CacheControl.GET_LIVE_ELSE_CACHE;
+        MyOkHttp.getData(url, c, new IResponse() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                //showToast("Not able to retrive data ...");
-                e.printStackTrace();
-                isProgress = false;
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MainActivity.Get().hideLoading();
-                    }
-                });
-            }
-            @Override
-            public void onResponse(Response response) throws IOException {
-                final List<Nodes> nodesList = new ArrayList<Nodes>();
-                try {
-                    String jsonData = response.body().string();
-                    JSONObject Jobject = new JSONObject(jsonData);
-                    JSONArray Jarray = null;
-                    if (Jobject.has("out")){
-                        Jarray = Jobject.getJSONArray("out");
-                        for (int i = 0; i < Jarray.length(); i++) {
-                            JSONObject object = Jarray.getJSONObject(i);
-                            if(object.has("title") && object.has("preview")) { //TODO
-                                nodesList.add(new Nodes(object.optString("uid",null),
-                                        object.optString("title",null),
-                                        object.optString("imgurl",null),
-                                        object.optString("preview",null),
-                                        object.optString("author",null),
-                                        object.optString("url",null),
-                                        object.optString("date",null),
-                                        null,
-                                        null));
+            public void success(JSONObject Jobject) {
+                if(Jobject != null){
+                    final List<Nodes> nodesList = new ArrayList<Nodes>();
+                    try {
+                        JSONArray Jarray = null;
+                        if (Jobject.has("out")){
+                            Jarray = Jobject.getJSONArray("out");
+                            for (int i = 0; i < Jarray.length(); i++) {
+                                JSONObject object = Jarray.getJSONObject(i);
+                                if(object.has("title") && object.has("preview")) { //TODO
+                                    nodesList.add( new Nodes(Nodes.TYPE.NEWS,
+                                            object.optString("uid",null),
+                                            object.optString("title",null),
+                                            object.optString("imgurl",null),
+                                            object.optString("preview",null),
+                                            object.optString("author",null),
+                                            object.optString("url",null),
+                                            object.optString("date",null),
+                                            null,
+                                            null));
 
-                            }
-                        }
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(nodesList.size() == 0){
-
-                                } else{
-                                    verticlePagerAdapter.appendNodes(nodesList);
-                                    page++;
-                                    if(page == 0){
-                                        MainActivity.Get().moveToTop();
-                                    }
                                 }
                             }
-                        });
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(nodesList.size() == 0){
+
+                                    } else{
+                                        verticlePagerAdapter.appendNodes(nodesList);
+                                        page++;
+                                        if(page == 0){
+                                            MainActivity.Get().moveToTop();
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+                //cleanup.
                 isProgress = false;
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
@@ -205,7 +200,16 @@ public class HorizantalViewPagerAdapter  extends PagerAdapter {
                     }
                 });
             }
-
+            @Override
+            public void error(String msg) {
+                isProgress = false;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.Get().hideLoading();
+                    }
+                });
+            }
         });
     }
 }

@@ -1,10 +1,9 @@
-package in.peerreview.inshortsbengali;
+package in.peerreview.External;
 
 import android.provider.Settings;
 import android.util.Log;
 
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -20,6 +19,9 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
+
+import in.peerreview.inshortsbengali.BuildConfig;
+import in.peerreview.inshortsbengali.MainActivity;
 
 /**
 

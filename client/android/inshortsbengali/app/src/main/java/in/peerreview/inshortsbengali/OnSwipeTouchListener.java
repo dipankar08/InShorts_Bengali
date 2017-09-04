@@ -10,8 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-public class OnSwipeTouchListener implements OnTouchListener {
-
+public class OnSwipeTouchListener  {
+/*
     private final GestureDetector gestureDetector;
 
     public OnSwipeTouchListener (Context ctx){
@@ -75,4 +75,5 @@ public class OnSwipeTouchListener implements OnTouchListener {
 
     public void onSwipeBottom() {
     }
+    */
 }

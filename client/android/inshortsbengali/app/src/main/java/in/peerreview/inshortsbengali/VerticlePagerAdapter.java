@@ -1,6 +1,7 @@
 package in.peerreview.inshortsbengali;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.text.Html;
 import android.text.Spanned;
@@ -15,10 +16,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Node;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import in.peerreview.External.BrowserActivity;
+import in.peerreview.External.ShareScreen;
 
 /**
  * Created by ddutta on 7/6/2017.
@@ -57,15 +59,32 @@ public class VerticlePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         View itemView = mLayoutInflater.inflate(R.layout.card, container, false);
 
-        Nodes n = mNodesList.get(position);
+        final Nodes n = mNodesList.get(position);
         ImageView img = (ImageView) itemView.findViewById(R.id.image);
         TextView title = (TextView) itemView.findViewById(R.id.title);
         TextView fullstory = (TextView) itemView.findViewById(R.id.fullstory);
-        //TextView position1 = (TextView) itemView.findViewById(R.id.position);
+        TextView more = (TextView) itemView.findViewById(R.id.more);
+        TextView shareit = (TextView) itemView.findViewById(R.id.shareit);
+        TextView rank = (TextView) itemView.findViewById(R.id.rank);
         title.setText(n.getTitle());
-        Spanned html = Html.fromHtml(n.getFullstory() + "<a href='"+n.getUrl()+"'>. know more...</a>");
-        fullstory.setMovementMethod(LinkMovementMethod.getInstance());
-        fullstory.setText(html);
+        more.setMovementMethod(LinkMovementMethod.getInstance());
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.Get(), BrowserActivity.class);
+                intent.putExtra("url", n.getUrl());
+                MainActivity.Get().startActivity(intent);
+            }
+        });
+        shareit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareScreen.share();
+            }
+        });
+
+        rank.setText((position+1)+"/"+mNodesList.size());
+        fullstory.setText(n.getFullstory());
         //position1.setText((position+1)+"/"+mNodesList.size());
         Log.d("DIPANKAR","instantiateItem: URL"+n.getUrl());
         Picasso.with(mContext)
