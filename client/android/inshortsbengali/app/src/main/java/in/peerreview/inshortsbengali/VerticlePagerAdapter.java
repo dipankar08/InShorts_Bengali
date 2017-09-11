@@ -2,6 +2,10 @@ package in.peerreview.inshortsbengali;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.text.Html;
 import android.text.Spanned;
@@ -19,8 +23,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.peerreview.External.BlurBuilder;
 import in.peerreview.External.BrowserActivity;
 import in.peerreview.External.ShareScreen;
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by ddutta on 7/6/2017.
@@ -57,40 +63,55 @@ public class VerticlePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View itemView = mLayoutInflater.inflate(R.layout.card, container, false);
-
         final Nodes n = mNodesList.get(position);
-        ImageView img = (ImageView) itemView.findViewById(R.id.image);
-        TextView title = (TextView) itemView.findViewById(R.id.title);
-        TextView fullstory = (TextView) itemView.findViewById(R.id.fullstory);
-        TextView more = (TextView) itemView.findViewById(R.id.more);
-        TextView shareit = (TextView) itemView.findViewById(R.id.shareit);
-        TextView rank = (TextView) itemView.findViewById(R.id.rank);
-        title.setText(n.getTitle());
-        more.setMovementMethod(LinkMovementMethod.getInstance());
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.Get(), BrowserActivity.class);
-                intent.putExtra("url", n.getUrl());
-                MainActivity.Get().startActivity(intent);
-            }
-        });
-        shareit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShareScreen.share();
-            }
-        });
+        View itemView;
+        switch(n.getType()){
+            case NEWS:
+                itemView = mLayoutInflater.inflate(R.layout.card, container, false);
+                ImageView img = (ImageView) itemView.findViewById(R.id.image);
+                TextView title = (TextView) itemView.findViewById(R.id.title);
+                TextView fullstory = (TextView) itemView.findViewById(R.id.fullstory);
+                TextView more = (TextView) itemView.findViewById(R.id.more);
+                TextView shareit = (TextView) itemView.findViewById(R.id.shareit);
+                TextView rank = (TextView) itemView.findViewById(R.id.rank);
+                title.setText(n.getTitle());
+                more.setMovementMethod(LinkMovementMethod.getInstance());
+                more.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.Get(), BrowserActivity.class);
+                        intent.putExtra("url", n.getUrl());
+                        MainActivity.Get().startActivity(intent);
+                    }
+                });
+                shareit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ShareScreen.share();
+                    }
+                });
 
-        rank.setText((position+1)+"/"+mNodesList.size());
-        fullstory.setText(n.getFullstory());
-        //position1.setText((position+1)+"/"+mNodesList.size());
-        Log.d("DIPANKAR","instantiateItem: URL"+n.getUrl());
-        Picasso.with(mContext)
-                .load(n.getImgUrl())
-                .error(R.drawable.noimage)
-                .into(img);
+                rank.setText((position+1)+"/"+mNodesList.size());
+                fullstory.setText(n.getFullstory());
+                //position1.setText((position+1)+"/"+mNodesList.size());
+                Log.d("DIPANKAR","instantiateItem: URL"+n.getUrl());
+                Picasso.with(mContext)
+                        .load(n.getImgUrl())
+                        .error(R.drawable.noimage)
+                        .into(img);
+                break;
+            case INTRO:
+            default:
+                itemView = mLayoutInflater.inflate(R.layout.intro_card, container, false);
+                title = (TextView) itemView.findViewById(R.id.title);
+                TextView subtitle = (TextView) itemView.findViewById(R.id.subtitle);
+                ImageView icon = (ImageView) itemView.findViewById(R.id.icon);
+                title.setText(n.getTitle());
+                subtitle.setText(n.getSubtitle());
+                icon.setImageResource(n.getDrawableid());
+        }
+
+
         container.addView(itemView);
         return itemView;
     }
